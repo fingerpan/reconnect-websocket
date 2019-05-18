@@ -1,7 +1,7 @@
 
 
 
-import Socket from '../src/Socket'
+import Socket from '../../src/Socket'
 
 import { Server, WebSocket } from 'mock-socket'
 // 
