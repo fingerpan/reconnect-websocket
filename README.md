@@ -1,2 +1,13 @@
-# reconnect-websocket
-auto reconnect  websocket
+# reconent-websocket
+
+## Features
+
+# Browser Support
+
+# Installing
+
+## Example
+
+## Typescript
+
+## License

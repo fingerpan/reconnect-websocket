@@ -1,0 +1,72 @@
+{
+    "name": "vue-sockets",
+    "version": "1.0.0",
+    "description": "websocket plugin for Vue2.js",
+    "main": "dist/vue-socket.js",
+    "types": "./types/Socket.d.ts",
+    "scripts": {
+        "dev": "node example/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "node build/build.js",
+        "start": "node build/dev-server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fingerpan/vue-sockets.git"
+    },
+    "keywords": [
+        "vue2",
+        "websocket"
+    ],
+    "author": "youngpan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/fingerpan/vue-sockets/issues"
+    },
+    "engines": {
+        "node": ">= 4.0.0",
+        "npm": ">= 3.0.0"
+    },
+    "homepage": "https://github.com/fingerpan/vue-sockets#readme",
+    "devDependencies": {
+        "@types/jasmine": "^3.3.12",
+        "babel": "^6.23.0",
+        "babel-core": "^6.26.0",
+        "babel-eslint": "^8.0.3",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "buble": "^0.16.0",
+        "eslint": "^4.13.1",
+        "eslint-config-standard": "^6.2.1",
+        "eslint-friendly-formatter": "^3.0.0",
+        "eslint-plugin-html": "^3.0.0",
+        "eslint-plugin-promise": "^3.4.0",
+        "eslint-plugin-standard": "^2.0.1",
+        "express": "^4.16.2",
+        "jasmine-core": "^3.4.0",
+        "karma": "^4.1.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-cli": "^2.0.0",
+        "karma-coverage": "^1.1.2",
+        "karma-firefox-launcher": "^1.1.0",
+        "karma-ie-launcher": "^1.0.0",
+        "karma-jasmine": "^2.0.1",
+        "karma-safari-launcher": "^1.0.0",
+        "karma-typescript": "^4.0.0",
+        "mock-socket": "^8.0.5",
+        "nodejs-websocket": "^1.7.1",
+        "rollup": "^0.50.0",
+        "rollup-plugin-babel": "^3.0.3",
+        "rollup-plugin-buble": "^0.16.0",
+        "rollup-plugin-commonjs": "^8.2.1",
+        "rollup-plugin-flow-no-whitespace": "^1.0.0",
+        "rollup-plugin-node-resolve": "^3.0.0",
+        "rollup-plugin-replace": "^2.0.0",
+        "rollup-plugin-typescript": "^1.0.1",
+        "rollup-watch": "^4.0.0",
+        "tslib": "^1.9.3",
+        "typescript": "^3.4.5",
+        "uglify-js": "^3.1.3"
+    }
+}
