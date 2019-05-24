@@ -37,7 +37,7 @@ export interface Promiser {
 }
 
 export function bulidPromPending(getPromiser: (args: Promiser) => any, errorHandler: (error: Error) => any): Promise<any> {
-  let promiser:Promiser
+  let promiser:Promiser|any = {}
   let promise = new Promise((resolve, reject) => {
     promiser.state = 'pending'
     promiser.resolve = function(...args: any[]) {
@@ -106,15 +106,6 @@ export function expect(target: any, ...args: string[]) {
   return findIndex(args, t => t === getType(target)) > 0
 }
 
-/**
- * 判断传入对象 是否为构造函数Object直接构造，并且不为null
- * @param obj           {查询对象}
- * @returns {boolean}   {返回是否为纯对象}
- */
-export function isPlainObject(obj: any) {
-  return obj && typeof obj === 'object' && getType(obj) === 'Object'
-}
-
 
 export const isEmptyObject = (obj: Object): boolean => Object.keys(obj).length === 0
 
@@ -126,5 +117,11 @@ export class CreateError extends Error {
   }
 }
 
+
+export const warn = (message:any) => {
+  if(process.env.NODE_ENV !== 'production' && message && console && console.warn) {
+    console.warn(message)
+  }
+}
 
 

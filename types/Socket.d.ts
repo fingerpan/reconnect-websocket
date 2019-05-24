@@ -44,7 +44,7 @@ export interface SendOptions {
 
 
 
-declare class SocketClass {
+declare class ReconnentWebsocket {
 
   /**
    * @constructorg
@@ -101,4 +101,4 @@ declare class SocketClass {
 
 
 
-export default SocketClass
+export default ReconnentWebsocket

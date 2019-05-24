@@ -1,7 +1,7 @@
 import EventEmitter from './EventEmitter'
 import errorInfo from './errorInfo'
-import { merge, get, Promiser, bulidPromPending, isPlainObject, expect, CreateError } from './util'
-import SocketClass , { SendOptions, Config, BeforeSendHook, BeforeEmitHook, SocketEvent, BinaryType   } from '../types/Socket'
+import { merge, get, Promiser, bulidPromPending, expect, CreateError, warn } from './util'
+import ReconnentWebsocketClass , { SendOptions, Config, BeforeSendHook, BeforeEmitHook, SocketEvent, BinaryType   } from '../types/Socket'
 
 declare global {
   interface Window {
@@ -22,7 +22,7 @@ const defaultSendConfig: SendOptions = {
   timeout: 10000
 }
 
-export default class Socket extends EventEmitter implements SocketClass {
+export default class ReconnentWebsocket extends EventEmitter implements ReconnentWebsocketClass {
   // static install?: any; // vue install 
   static version?: string = '__VERSION__';
 
@@ -103,22 +103,23 @@ export default class Socket extends EventEmitter implements SocketClass {
     protocol: '',
     reconnect: true,
     autoconnect: true,
-    reconnectTime: 5
+    reconnectTime: 10
   }
 
-  // 配置
+  // config
   config: Config;
 
-  // 钩子
+  // hooks
   beforeSendHook?: BeforeSendHook;
   beforeEmitHook?: BeforeEmitHook;
 
-  // 私有对象
+  // private prop
   private $ws?: WebSocket;
   private url?: string;
   private _ignoreReconnect?: boolean = false;
   private _connectTime:number = 0;
   private _MessageQueue:Array<MessageQueueItem> = [];
+  private _reconnectTime:number = 0;
 
 
   /**
@@ -133,6 +134,9 @@ export default class Socket extends EventEmitter implements SocketClass {
     // save hooks
     this.beforeSendHook = this.config.beforeSendHook
     this.beforeEmitHook = this.config.beforeEmitHook
+
+    // 
+    this._reconnectTime = this.config.reconnectTime
 
     // auto connect
     if (url && config.autoconnect === true) {
@@ -237,20 +241,12 @@ export default class Socket extends EventEmitter implements SocketClass {
 
   /**
    * reconnect WebSocket
-   * @param  {string} [url] -WebSocket url
    */
-  public reconnect (url?:string): boolean | void {
-    this.config.reconnectTime--
-    // stop loop connect
-    if (this.config.reconnectTime < 0) {
-      return false
-    }
+  public reconnect (): boolean | void {
+    // reset reconnectTime
+    this._reconnectTime = this.config.reconnectTime
     // close socket
-    this.$ws && this.$ws.close()
-    // delete
-    delete this.$ws
-    // connect
-    this.connect(url)
+    this._reconnect()
   }
 
 
@@ -272,6 +268,14 @@ export default class Socket extends EventEmitter implements SocketClass {
   // private methods 
   // -------------------------------------------------
 
+  private _reconnect (): boolean | void {
+    // close socket
+    this.$ws && this.$ws.close()
+    // delete
+    delete this.$ws
+    // connect
+    this.connect()
+  }
 
 
   /**
@@ -377,17 +381,21 @@ export default class Socket extends EventEmitter implements SocketClass {
    * @param  {event} event  -event
    */
   private __onopen (event: Event) {
-    console.warn('=========== websocket open ============')
+    warn('=========== websocket open ============')
+
+    // reset connect time
+    this._reconnectTime = this.config.reconnectTime
     this._connectTime++
-    // emit success
-    this._emit('success', {
-      ...event,
-      type: 'success'
-    })
+    
+    // emit open
+    this._emit('open', event)
     // emit open or reconnect
     if (this._connectTime === 1) {
       // first is open
-      this._emit('open', event)
+      this._emit('connect', {
+        ...event,
+        type: 'connect'
+      })
     } else {
       // 如果不是第一次, 触发重新连接事件
       this._emit('reconnect', {
@@ -419,7 +427,18 @@ export default class Socket extends EventEmitter implements SocketClass {
     this._emit('close', event)
     // reconect
     if (this.config.reconnect && !this._ignoreReconnect) {
-      this.connect()
+      this._reconnectTime--
+      // stop loop connect
+      if (this._reconnectTime < 0) {
+        this._emit('reconnet-fail', new CreateError(
+          'RECONNENT-FAIL',
+          'Attempts have been made to reconnect five times, exceeding the maximum number of reconnections. Please call the reconnection manually.'
+        ))
+        return false
+      }
+
+      // reconnect
+      this._reconnect()
     }
     // reset _ignoreReconnect after use
     this._ignoreReconnect = false
@@ -433,11 +452,10 @@ export default class Socket extends EventEmitter implements SocketClass {
   private async __onmessage (event: SocketEvent) {
     if (this.beforeEmitHook && typeof this.beforeEmitHook === 'function') {
       let afterEvent: false | SocketEvent = await this.beforeEmitHook(event)
-      if (afterEvent === false || !isPlainObject(event) || !(<SocketEvent>afterEvent).type) return;
+      if (afterEvent === false || !(<SocketEvent>afterEvent).type) return;
       // 赋值
       event = <SocketEvent>afterEvent
     }
     this._emit(event.type, event)
   }
 }
-

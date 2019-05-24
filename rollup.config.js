@@ -1,6 +1,6 @@
 
 
-// const uglify = require("uglify-js");
+const uglify = require("uglify-js");
 const buble = require('rollup-plugin-buble')
 const flow = require('rollup-plugin-flow-no-whitespace')
 const typescript = require('rollup-plugin-typescript')
@@ -10,9 +10,10 @@ const replace = require('rollup-plugin-replace')
 
 // var
 const version = process.env.VERSION || require('./package.json').version
+const name = 'ReconnectWebsocket'
 const banner = `
 /**
-* vue-socket v${version}
+* ${name} v${version}
 * @author youngpan
 * (c) ${new Date().getFullYear()}
 */`
@@ -28,7 +29,8 @@ export default {
     replace({
       __VERSION__: version
     }),
-    buble()
+    buble(),
+    // uglify() TODO: only min
   ],
   output: [
     {
@@ -36,7 +38,7 @@ export default {
         format: 'umd',
         env: 'development',
         banner,
-        name: "ReconnectWebsocket"
+        name
       },
     //   {
     //     file: resolve('dist/reconnect-websocket.min.js'),
@@ -46,12 +48,12 @@ export default {
       {
         file: 'dist/reconnect-websocket.common.js',
         format: 'cjs',
-        name: "ReconnectWebsocket",
         banner,
       },
       {
         file: 'dist/reconnect-websocket.esm.js',
-        format: 'es'
+        format: 'es',
+        name
       }
   ]
 };
