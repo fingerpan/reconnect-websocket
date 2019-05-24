@@ -4,9 +4,11 @@ export interface BeforeSendHook {
 }
 
 
+
 export interface BeforeEmitHook {
-  (...args: any[]): false | SocketEvent;
+  (event: SocketEvent): false | SocketEvent;
 }
+
 
 
 export interface SocketEvent {
@@ -14,6 +16,8 @@ export interface SocketEvent {
   data: any;
   [propName: string]: any
 }
+
+
 
 export type BinaryType = 'blob'|'arraybuffer'
 
@@ -37,6 +41,7 @@ export interface SendOptions {
   timeout?: number;
   retry?: boolean;
 }
+
 
 
 declare class SocketClass {
@@ -93,5 +98,7 @@ declare class SocketClass {
   public reconnect (url?:string): boolean | void;
   public close (code?:number, reason?:string):void;
 }
+
+
 
 export default SocketClass

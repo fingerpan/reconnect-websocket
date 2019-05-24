@@ -218,7 +218,7 @@ export default class Socket extends EventEmitter implements SocketClass {
       )
     }
     // new WebSocket
-    let ws = this.$ws = new WebSocket(url, this.config.protocol)
+    let ws = this.$ws = this.config.protocol ? new WebSocket(url, this.config.protocol) : new WebSocket(url)
 
     // bind open error message close event
     ws.onopen = this.__onopen.bind(this)
@@ -279,7 +279,7 @@ export default class Socket extends EventEmitter implements SocketClass {
    */
   private _sendMessageQueue() {
     let messageQueue: Array<MessageQueueItem> = this._MessageQueue
-    for(let i = messageQueue.length; i >= 0; i--) {
+    for(let i = messageQueue.length - 1; i >= 0; i--) {
       let queueItem:MessageQueueItem = messageQueue[i]
       this.__send(queueItem.options, queueItem.promiser)
       // release 

@@ -14,7 +14,7 @@ describe('connect normal', function() {
   beforeEach(function() {
     mockServer = new Server(wsUrl)
   })
-  it('normal', function(done) {  
+  it('normal', function(done) {
       mockServer.on('connection', (ws:any) => {
         ws.send(sendData)
       })

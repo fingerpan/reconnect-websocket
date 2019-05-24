@@ -17,7 +17,7 @@ export function findIndex(sourceArray: any[], callback: ArrayHighOrderCallback):
 }
 
 export const merge = <T>(target: T, ...source: T[]): T => {
-  for(let i = source.length; i >= 0; i--) {
+  for(let i = source.length - 1; i >= 0; i--) {
     let item = source[i]
     for (var key in item) {
       if (item.hasOwnProperty(key) && !target[key]) {

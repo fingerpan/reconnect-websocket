@@ -87,7 +87,7 @@ export default class EventEmitter {
       return
     }
 
-    for(let i = _event.length; i >= 0; i--) {
+    for(let i = _event.length - 1; i >= 0; i--) {
       let eventItem = _event[i]
       // callback
       let cxt = eventItem.cxt || this

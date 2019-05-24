@@ -29,7 +29,5 @@ module.exports = ws
     conn.on('error', function(code, reason) {
       console.log('异常关闭')
     })
-
-
   })
   .listen(3000)

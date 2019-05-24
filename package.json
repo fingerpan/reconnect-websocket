@@ -6,8 +6,8 @@
     "types": "./types/Socket.d.ts",
     "scripts": {
         "dev": "node example/server.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "node build/build.js",
+        "test": "karma start",
+        "build": "rollup --config rollup.config.js",
         "start": "node build/dev-server.js"
     },
     "repository": {
