@@ -1,12 +1,12 @@
 
 
 
-import Socket from '../../src/Socket'
+import ReconnentWebsocket from '../../src/ReconnectWebsocket'
 
 import { Server, WebSocket } from 'mock-socket'
 // 
 describe('connect normal', function() {
-  let $socket: Socket
+  let $socket: ReconnentWebsocket
   let mockServer: Server
   let wsUrl = 'ws://localhost:8080'
   const sendData = 'sendTestData'
@@ -18,14 +18,14 @@ describe('connect normal', function() {
       mockServer.on('connection', (ws:any) => {
         ws.send(sendData)
       })
-      $socket = new Socket(wsUrl)
+      $socket = new ReconnentWebsocket(wsUrl)
 
-      expect($socket.readyState).toBe(Socket.CONNECTING)
+      expect($socket.readyState).toBe(ReconnentWebsocket.CONNECTING)
 
       // open
       $socket.on('open', (event) => {
         expect(event.type).toBe('open')
-        expect($socket.readyState).toBe(Socket.OPEN)
+        expect($socket.readyState).toBe(ReconnentWebsocket.OPEN)
       })
 
       // message
@@ -34,15 +34,5 @@ describe('connect normal', function() {
         expect(event.data).toBe(sendData)
         mockServer.stop(done)
       })
-  })
-
-
-
-  it('event normal', function(done) {
-
-
-
-
-    
   })
 });

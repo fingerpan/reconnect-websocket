@@ -1,35 +1,31 @@
 {
-    "name": "vue-sockets",
+    "name": "reconnect-websocket",
     "version": "1.0.0",
-    "description": "websocket plugin for Vue2.js",
-    "main": "dist/vue-socket.js",
-    "types": "./types/Socket.d.ts",
+    "description": "auto reconent websocket package",
+    "main": "dist/reconnect-websocket.js",
+    "types": "./types/ReconnectWebsocket.d.ts",
     "scripts": {
-        "dev": "node example/server.js",
-        "test": "karma start",
         "build": "rollup --config rollup.config.js",
-        "start": "node build/dev-server.js"
+        "test": "cross-env NODE_ENV=production karma start ./karma.conf.js --single-run"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/fingerpan/vue-sockets.git"
+        "url": "git+https://github.com/fingerpan/reconnect-websocket.git"
     },
     "keywords": [
-        "vue2",
+        "reconnect",
+        "socket",
         "websocket"
     ],
     "author": "youngpan",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
-        "url": "https://github.com/fingerpan/vue-sockets/issues"
+        "url": "https://github.com/fingerpan/reconnect-websocket/issues"
     },
-    "engines": {
-        "node": ">= 4.0.0",
-        "npm": ">= 3.0.0"
-    },
-    "homepage": "https://github.com/fingerpan/vue-sockets#readme",
+    "homepage": "https://github.com/fingerpan/reconnect-websocket#readme",
     "devDependencies": {
         "@types/jasmine": "^3.3.12",
+        "@types/node": "^12.0.2",
         "babel": "^6.23.0",
         "babel-core": "^6.26.0",
         "babel-eslint": "^8.0.3",
@@ -37,6 +33,7 @@
         "babel-preset-env": "^1.6.1",
         "babel-preset-stage-2": "^6.24.1",
         "buble": "^0.16.0",
+        "cross-env": "^5.2.0",
         "eslint": "^4.13.1",
         "eslint-config-standard": "^6.2.1",
         "eslint-friendly-formatter": "^3.0.0",

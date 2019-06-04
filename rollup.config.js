@@ -20,7 +20,7 @@ const banner = `
 
 
 export default {
-  input: 'src/Socket.ts',
+  input: 'src/ReconnectWebsocket.ts',
   plugins: [
     typescript({ lib: ["es5", "es6", "dom"], target: "es5" }),
     flow(),

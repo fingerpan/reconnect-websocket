@@ -1,7 +1,7 @@
 import EventEmitter from './EventEmitter'
 import errorInfo from './errorInfo'
 import { merge, get, Promiser, bulidPromPending, expect, CreateError, warn } from './util'
-import ReconnentWebsocketClass , { SendOptions, Config, BeforeSendHook, BeforeEmitHook, SocketEvent, BinaryType   } from '../types/Socket'
+import ReconnentWebsocketClass , { SendOptions, Config, BeforeSendHook, BeforeEmitHook, SocketEvent, BinaryType   } from '../types/ReconnectWebsocket'
 
 declare global {
   interface Window {
@@ -89,7 +89,7 @@ export default class ReconnentWebsocket extends EventEmitter implements Reconnen
    * @return {number} -The current state of the connection
    */
   get readyState () {
-    return get(this.$ws, 'readyState', Socket.CLOSED)
+    return get(this.$ws, 'readyState', ReconnentWebsocket.CLOSED)
   }
 
 
@@ -125,11 +125,11 @@ export default class ReconnentWebsocket extends EventEmitter implements Reconnen
   /**
    * @constructorg
    */
-  constructor(url: string, config: Config = Socket.defaultConfig) {
+  constructor(url: string, config: Config = ReconnentWebsocket.defaultConfig) {
     super()
 
     // set config
-    this.config = merge(config, Socket.defaultConfig)
+    this.config = merge(config, ReconnentWebsocket.defaultConfig)
 
     // save hooks
     this.beforeSendHook = this.config.beforeSendHook
@@ -323,13 +323,13 @@ export default class ReconnentWebsocket extends EventEmitter implements Reconnen
 
     const READYSTATE = this.readyState
     // is closing or closed
-    if (READYSTATE > Socket.OPEN) {
+    if (READYSTATE > ReconnentWebsocket.OPEN) {
       const err = new CreateError(
         'INVALID_STATE_ERR',
         "Failed to execute 'send' on 'WebSocket': The connection is not currently OPEN"
       )
       return promiser.reject(err)
-    } else if (READYSTATE === Socket.CONNECTING) {
+    } else if (READYSTATE === ReconnentWebsocket.CONNECTING) {
       // is connecting
       if (retry === false) {
         const err = new CreateError(
